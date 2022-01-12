@@ -8,6 +8,8 @@ public:
 
     void newVertex(std::initializer_list<int> edgesList);
 
+    void newEdge(int first, int second);
+
     friend std::ostream &operator<<(std::ostream &out, const graph &this_graph);
 
     ~graph();

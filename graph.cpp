@@ -18,7 +18,7 @@ void graph::newVertex(std::initializer_list<int> edgesList) {
             vIter->second->edges.push_back(newVertex);
             vertices_map[newVertex->id] = newVertex;
         } else {
-            exit(-1);
+            exit(-1); // One or more vertices are not exist
         }
     }
 }
@@ -34,4 +34,22 @@ std::ostream& operator<< (std::ostream &out, const graph &this_graph) {
     }
     out << str;
     return out;
+}
+
+void graph::newEdge(int first, int second) {
+    if(first == second){
+        exit(-1); // first == second
+    }
+    auto firstIter = vertices_map.find(first);
+    auto secondIter = vertices_map.find(second);
+    if (firstIter == vertices_map.end() or secondIter == vertices_map.end()){
+        exit(-1); // first vertex or second vertex is not exists
+    }
+    for (auto i: firstIter->second->edges){
+        if (second == i->id){
+            exit(-1); // edge already exists
+        }
+    }
+    firstIter->second->edges.push_back(secondIter->second);
+    secondIter->second->edges.push_back(firstIter->second);
 }
