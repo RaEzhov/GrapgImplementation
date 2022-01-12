@@ -7,8 +7,9 @@
 
 class vertex_of_graph {
 public:
-    size_t id;
     std::list<vertex_of_graph *> edges;
+
+    size_t id() const;
 
     int operator[](std::string &str);
 
@@ -17,6 +18,7 @@ public:
     ~vertex_of_graph();
 
 private:
+    size_t identifier;
     std::unordered_map<std::string, int> vertex_map;
     static size_t amount_of_vertices;
 };

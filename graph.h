@@ -8,7 +8,13 @@ public:
 
     void new_vertex(std::initializer_list<int> edges_list);
 
-    void new_edge(int first, int second);
+    void new_edge(size_t first, size_t second);
+
+    void delete_vertex(size_t id);
+
+    void delete_edge(size_t first, size_t second);
+
+    size_t size() const;
 
     friend std::ostream &operator<<(std::ostream &out, const graph &this_graph);
 
@@ -16,6 +22,7 @@ public:
 
 private:
     std::unordered_map<int, vertex_of_graph *> vertices_map;
+    void check_vertices(std::unordered_map<int, vertex_of_graph*>::iterator, std::unordered_map<int, vertex_of_graph*>::iterator);
 };
 
 #endif//GRAPH_H
