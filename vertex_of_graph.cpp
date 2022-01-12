@@ -1,13 +1,13 @@
 #include "vertex_of_graph.h"
-vertexOfGraph::vertexOfGraph(){
+vertex_of_graph::vertex_of_graph(){
     id = amount_of_vertices;
     amount_of_vertices++;
 }
-vertexOfGraph::~vertexOfGraph() {
+vertex_of_graph::~vertex_of_graph() {
     amount_of_vertices--;
 }
-int vertexOfGraph::operator[](std::string &str) {
-    return vertexMap[str];
+int vertex_of_graph::operator[](std::string &str) {
+    return vertex_map[str];
 }
 
-size_t vertexOfGraph::amount_of_vertices = 0;
+size_t vertex_of_graph::amount_of_vertices = 0;

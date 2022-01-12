@@ -5,19 +5,19 @@
 #include <string>
 #include <list>
 
-class vertexOfGraph {
+class vertex_of_graph {
 public:
     size_t id;
-    std::list<vertexOfGraph *> edges;
+    std::list<vertex_of_graph *> edges;
 
     int operator[](std::string &str);
 
-    vertexOfGraph();
+    vertex_of_graph();
 
-    ~vertexOfGraph();
+    ~vertex_of_graph();
 
 private:
-    std::unordered_map<std::string, int> vertexMap;
+    std::unordered_map<std::string, int> vertex_map;
     static size_t amount_of_vertices;
 };
 
