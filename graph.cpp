@@ -39,7 +39,7 @@ std::ostream& operator<< (std::ostream &out, const graph &this_graph) {
     return out;
 }
 
-void graph::check_vertices(std::unordered_map<int, vertex_of_graph*>::iterator first, std::unordered_map<int, vertex_of_graph*>::iterator second) {
+void graph::check_vertices(std::unordered_map<int, vertex_of_graph*>::iterator first, std::unordered_map<int, vertex_of_graph*>::iterator second) const{
     if(first == second){
         exit(-1); // first == second
     }
@@ -102,7 +102,7 @@ vertex_of_graph &graph::operator[](size_t id) {
     return *vertices_map[id];
 }
 
-void graph::dfs_visit(vertex_of_graph *vertex, void (func)(const vertex_of_graph&)) {
+void graph::dfs_visit(vertex_of_graph *vertex, void (func)(const vertex_of_graph&)) const{
     vertex->color = GRAY;
     func(*vertex);
     for (auto v: vertex->edges){
@@ -113,7 +113,7 @@ void graph::dfs_visit(vertex_of_graph *vertex, void (func)(const vertex_of_graph
     vertex->color = BLACK;
 }
 
-void graph::depth_first_search(void (func)(const vertex_of_graph&)) {
+void graph::depth_first_search(void (func)(const vertex_of_graph&)) const{
     for (auto v: vertices_map){
         v.second->color = WHITE;
     }
@@ -124,7 +124,7 @@ void graph::depth_first_search(void (func)(const vertex_of_graph&)) {
     }
 }
 
-void graph::breadth_first_search(void (func)(const vertex_of_graph&)) {
+void graph::breadth_first_search(void (func)(const vertex_of_graph&)) const{
     for (auto v: vertices_map){
         v.second->color = WHITE;
     }

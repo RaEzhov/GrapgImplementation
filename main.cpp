@@ -3,7 +3,7 @@
 
 int main() {
     graph my_graph;
-    for(int i = 0; i < 11; i++){
+    for (int i = 0; i < 11; i++) {
         my_graph.new_vertex();
     }
     my_graph.new_edge({{10, 9},
@@ -11,15 +11,22 @@ int main() {
                        {8,  7},
                        {7,  2},
                        {9,  6},
-                       {6,3},
-                       {3,1},
-                       {9,5},
-                       {5,4}
+                       {6,  3},
+                       {3,  1},
+                       {9,  5},
+                       {5,  4}
                       });
+    my_graph[10]["my_key"] = 456789;
+    my_graph[8]["my_key"] = 123;
+    my_graph[6]["my_key"] = 456;
+    my_graph[2]["my_key"] = 90;
+    my_graph[1]["my_key"] = 1;
     my_graph.delete_vertex(0);
-    std::cout << my_graph;
-    my_graph.breadth_first_search([](const vertex_of_graph& v){std::cout << v.id() << ' ';});
-    std::cout << '\n';
-    my_graph.depth_first_search([](const vertex_of_graph& v){std::cout << v.id() << ' ';});
+    my_graph.depth_first_search([](const vertex_of_graph &v) {
+        std::string key = "my_key";
+        if (v.key_exists(key)) {
+            std::cout << "Vertex: " << v.id() << ", value: " << v[key] << '\n';
+        }
+    });
     return 0;
 }
