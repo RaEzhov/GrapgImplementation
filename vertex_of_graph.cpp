@@ -10,8 +10,9 @@ size_t vertex_of_graph::id() const {
     return identifier;
 }
 
-int vertex_of_graph::operator[](std::string &str) {
-    return vertex_map[str];
-}
 
 size_t vertex_of_graph::amount_of_vertices = 0;
+
+int &vertex_of_graph::operator[](const std::string &key) {
+    return vertex_map[key];
+}

@@ -11,7 +11,7 @@ public:
 
     size_t id() const;
 
-    int operator[](std::string &str);
+    int& operator[](const std::string &key);
 
     vertex_of_graph();
 

@@ -84,3 +84,11 @@ void graph::delete_edge(size_t first, size_t second) {
     iterators.first->second->edges.remove(iterators.second->second);
     iterators.second->second->edges.remove(iterators.first->second);
 }
+
+vertex_of_graph &graph::operator[](size_t id) {
+    auto iter = vertices_map.find(id);
+    if (iter == vertices_map.end()){
+        exit(-1); // No this key in map
+    }
+    return *vertices_map[id];
+}

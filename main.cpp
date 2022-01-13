@@ -6,6 +6,9 @@ int main() {
     for (int i = 0; i < 3; i++){
         my_graph.new_vertex();
     }
+    std::string a = "hello";
+    //my_graph[0][a] = 12;
+    std::cout << my_graph[0][a];
     my_graph.new_edge(0,1);
     my_graph.new_edge(1,2);
     my_graph.new_edge(2,0);

@@ -4,6 +4,8 @@
 
 class graph {
 public:
+    vertex_of_graph& operator[](size_t id);
+
     void new_vertex();
 
     void new_vertex(std::initializer_list<int> edges_list);
