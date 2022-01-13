@@ -5,8 +5,12 @@
 #include <string>
 #include <list>
 
+enum vertex_color{WHITE, GRAY, BLACK};
+
 class vertex_of_graph {
 public:
+    vertex_color color;
+
     std::list<vertex_of_graph *> edges;
 
     size_t id() const;

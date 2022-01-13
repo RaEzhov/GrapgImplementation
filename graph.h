@@ -12,6 +12,8 @@ public:
 
     void new_edge(size_t first, size_t second);
 
+    void new_edge(std::initializer_list<std::pair<size_t, size_t>> init_list);
+
     void delete_vertex(size_t id);
 
     void delete_edge(size_t first, size_t second);
@@ -20,11 +22,17 @@ public:
 
     friend std::ostream &operator<<(std::ostream &out, const graph &this_graph);
 
+    void depth_first_search(void (func)(const vertex_of_graph&));
+
+    void breadth_first_search(void (func)(const vertex_of_graph&));
+
     ~graph();
 
 private:
     std::unordered_map<int, vertex_of_graph *> vertices_map;
     void check_vertices(std::unordered_map<int, vertex_of_graph*>::iterator, std::unordered_map<int, vertex_of_graph*>::iterator);
+
+    void dfs_visit(vertex_of_graph* vertex, void (func)(const vertex_of_graph&));
 };
 
 #endif//GRAPH_H

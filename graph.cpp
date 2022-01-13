@@ -1,4 +1,6 @@
 #include "graph.h"
+#include <queue>
+
 
 void graph::new_vertex() {
     auto new_vertex = new vertex_of_graph;
@@ -61,6 +63,13 @@ void graph::new_edge(size_t first, size_t second) {
     iterators.second->second->edges.push_back(iterators.first->second);
 }
 
+void graph::new_edge(std::initializer_list<std::pair<size_t, size_t>> init_list) {
+    for(auto it: init_list){
+        new_edge(it.first, it.second);
+    }
+}
+
+
 size_t graph::size() const {
     return vertices_map.size();
 }
@@ -91,4 +100,46 @@ vertex_of_graph &graph::operator[](size_t id) {
         exit(-1); // No this key in map
     }
     return *vertices_map[id];
+}
+
+void graph::dfs_visit(vertex_of_graph *vertex, void (func)(const vertex_of_graph&)) {
+    vertex->color = GRAY;
+    func(*vertex);
+    for (auto v: vertex->edges){
+        if(v->color == WHITE){
+            dfs_visit(v, func);
+        }
+    }
+    vertex->color = BLACK;
+}
+
+void graph::depth_first_search(void (func)(const vertex_of_graph&)) {
+    for (auto v: vertices_map){
+        v.second->color = WHITE;
+    }
+    for(auto v: vertices_map){
+        if(v.second->color == WHITE){
+            dfs_visit(v.second, func);
+        }
+    }
+}
+
+void graph::breadth_first_search(void (func)(const vertex_of_graph&)) {
+    for (auto v: vertices_map){
+        v.second->color = WHITE;
+    }
+    std::queue<vertex_of_graph*> q;
+    q.push(vertices_map.begin()->second);
+    while (!q.empty()){
+        vertex_of_graph* u = q.front();
+        q.pop();
+        for (auto v: u->edges){
+            if (v->color == WHITE) {
+                v->color = GRAY;
+                q.push(v);
+            }
+        }
+        func(*u);
+        u->color = BLACK;
+    }
 }

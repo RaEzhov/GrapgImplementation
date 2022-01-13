@@ -2,6 +2,7 @@
 vertex_of_graph::vertex_of_graph(){
     identifier = amount_of_vertices;
     amount_of_vertices++;
+    color = WHITE;
 }
 vertex_of_graph::~vertex_of_graph() {
     amount_of_vertices--;
@@ -9,7 +10,6 @@ vertex_of_graph::~vertex_of_graph() {
 size_t vertex_of_graph::id() const {
     return identifier;
 }
-
 
 size_t vertex_of_graph::amount_of_vertices = 0;
 
