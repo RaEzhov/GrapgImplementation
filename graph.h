@@ -1,8 +1,11 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 #include "vertex_of_graph.h"
+#include <functional>
 
-class graph {
+enum vertex_color{WHITE, GRAY, BLACK};
+
+class Graph {
 public:
     void new_vertex();
 
@@ -18,22 +21,22 @@ public:
 
     size_t size() const;
 
-    friend std::ostream &operator<<(std::ostream &out, const graph &this_graph);
+    friend std::ostream &operator<<(std::ostream &out, const Graph &this_graph);
 
-    vertex_of_graph& operator[](size_t id);
+    VertexOfGraph& operator[](size_t id);
 
-    void depth_first_search(void (func)(const vertex_of_graph&)) const;
+    void depth_first_search(const std::function<void (const VertexOfGraph&)>& func) const;
 
-    void breadth_first_search(void (func)(const vertex_of_graph&)) const;
+    void breadth_first_search(const std::function<void (const VertexOfGraph&)>& func) const;
 
-    ~graph();
+    ~Graph();
 
 private:
-    std::unordered_map<int, vertex_of_graph *> vertices_map;
+    std::unordered_map<int, VertexOfGraph *> vertices_map;
 
-    void check_vertices(std::unordered_map<int, vertex_of_graph*>::iterator, std::unordered_map<int, vertex_of_graph*>::iterator) const;
+    void check_vertices(std::unordered_map<int, VertexOfGraph*>::iterator, std::unordered_map<int, VertexOfGraph*>::iterator) const;
 
-    void dfs_visit(vertex_of_graph* vertex, void (func)(const vertex_of_graph&)) const;
+    void dfs_visit(VertexOfGraph* vertex,const std::function<void (const VertexOfGraph&)>& func, std::unordered_map<VertexOfGraph*,vertex_color>& colors) const;
 };
 
 #endif//GRAPH_H

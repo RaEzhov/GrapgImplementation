@@ -2,17 +2,17 @@
 #include <queue>
 
 
-void graph::new_vertex() {
-    auto new_vertex = new vertex_of_graph;
+void Graph::new_vertex() {
+    auto new_vertex = new VertexOfGraph;
     vertices_map[new_vertex->id()] = new_vertex;
 }
-graph::~graph() {
+Graph::~Graph() {
     for (auto i:vertices_map) {
         delete i.second;
     }
 }
-void graph::new_vertex(std::initializer_list<int> edges_list) {
-    auto new_vertex = new vertex_of_graph;
+void Graph::new_vertex(std::initializer_list<int> edges_list) {
+    auto new_vertex = new VertexOfGraph;
     for (auto edge: edges_list) {
         auto vIter = vertices_map.find(edge);
         if (vIter != vertices_map.end()) {
@@ -25,7 +25,7 @@ void graph::new_vertex(std::initializer_list<int> edges_list) {
     }
 }
 
-std::ostream& operator<< (std::ostream &out, const graph &this_graph) {
+std::ostream& operator<< (std::ostream &out, const Graph &this_graph) {
     std::string str;
     str.reserve(this_graph.size()*20);
     for (const auto i: this_graph.vertices_map) {
@@ -39,7 +39,7 @@ std::ostream& operator<< (std::ostream &out, const graph &this_graph) {
     return out;
 }
 
-void graph::check_vertices(std::unordered_map<int, vertex_of_graph*>::iterator first, std::unordered_map<int, vertex_of_graph*>::iterator second) const{
+void Graph::check_vertices(std::unordered_map<int, VertexOfGraph*>::iterator first, std::unordered_map<int, VertexOfGraph*>::iterator second) const{
     if(first == second){
         exit(-1); // first == second
     }
@@ -49,8 +49,8 @@ void graph::check_vertices(std::unordered_map<int, vertex_of_graph*>::iterator f
 }
 
 
-void graph::new_edge(size_t first, size_t second) {
-    std::pair<std::unordered_map<int, vertex_of_graph*>::iterator , std::unordered_map<int, vertex_of_graph*>::iterator> iterators;
+void Graph::new_edge(size_t first, size_t second) {
+    std::pair<std::unordered_map<int, VertexOfGraph*>::iterator , std::unordered_map<int, VertexOfGraph*>::iterator> iterators;
     iterators.first = vertices_map.find(first);
     iterators.second = vertices_map.find(second);
     check_vertices(iterators.first, iterators.second);
@@ -63,18 +63,18 @@ void graph::new_edge(size_t first, size_t second) {
     iterators.second->second->edges.push_back(iterators.first->second);
 }
 
-void graph::new_edge(std::initializer_list<std::pair<size_t, size_t>> init_list) {
+void Graph::new_edge(std::initializer_list<std::pair<size_t, size_t>> init_list) {
     for(auto it: init_list){
         new_edge(it.first, it.second);
     }
 }
 
 
-size_t graph::size() const {
+size_t Graph::size() const {
     return vertices_map.size();
 }
 
-void graph::delete_vertex(size_t id) {
+void Graph::delete_vertex(size_t id) {
     if (vertices_map.find(id) == vertices_map.end()){
         exit(-1); // there is no such vertex in the graph
     }
@@ -85,8 +85,8 @@ void graph::delete_vertex(size_t id) {
     vertices_map.erase(id);
 }
 
-void graph::delete_edge(size_t first, size_t second) {
-    std::pair<std::unordered_map<int, vertex_of_graph*>::iterator , std::unordered_map<int, vertex_of_graph*>::iterator> iterators;
+void Graph::delete_edge(size_t first, size_t second) {
+    std::pair<std::unordered_map<int, VertexOfGraph*>::iterator , std::unordered_map<int, VertexOfGraph*>::iterator> iterators;
     iterators.first = vertices_map.find(first);
     iterators.second = vertices_map.find(second);
     check_vertices(iterators.first, iterators.second);
@@ -94,7 +94,7 @@ void graph::delete_edge(size_t first, size_t second) {
     iterators.second->second->edges.remove(iterators.first->second);
 }
 
-vertex_of_graph &graph::operator[](size_t id) {
+VertexOfGraph &Graph::operator[](size_t id) {
     auto iter = vertices_map.find(id);
     if (iter == vertices_map.end()){
         exit(-1); // No this key in map
@@ -102,44 +102,47 @@ vertex_of_graph &graph::operator[](size_t id) {
     return *vertices_map[id];
 }
 
-void graph::dfs_visit(vertex_of_graph *vertex, void (func)(const vertex_of_graph&)) const{
-    vertex->color = GRAY;
+void Graph::dfs_visit(VertexOfGraph *vertex, const std::function<void (const VertexOfGraph&)>& func,
+                      std::unordered_map<VertexOfGraph*,vertex_color>& colors) const{
+    colors[vertex] = GRAY;
     func(*vertex);
     for (auto v: vertex->edges){
-        if(v->color == WHITE){
-            dfs_visit(v, func);
+        if(colors[v] == WHITE){
+            dfs_visit(v, func, colors);
         }
     }
-    vertex->color = BLACK;
+    colors[vertex] = BLACK;
 }
 
-void graph::depth_first_search(void (func)(const vertex_of_graph&)) const{
+void Graph::depth_first_search(const std::function<void (const VertexOfGraph&)>& func) const{
+    std::unordered_map<VertexOfGraph*, vertex_color> colors;
     for (auto v: vertices_map){
-        v.second->color = WHITE;
+        colors[v.second] = WHITE;
     }
     for(auto v: vertices_map){
-        if(v.second->color == WHITE){
-            dfs_visit(v.second, func);
+        if(colors[v.second] == WHITE){
+            dfs_visit(v.second, func, colors);
         }
     }
 }
 
-void graph::breadth_first_search(void (func)(const vertex_of_graph&)) const{
+void Graph::breadth_first_search(const std::function<void (const VertexOfGraph&)>& func) const{
+    std::unordered_map<VertexOfGraph*, vertex_color> colors;
     for (auto v: vertices_map){
-        v.second->color = WHITE;
+        colors[v.second] = WHITE;
     }
-    std::queue<vertex_of_graph*> q;
+    std::queue<VertexOfGraph*> q;
     q.push(vertices_map.begin()->second);
     while (!q.empty()){
-        vertex_of_graph* u = q.front();
+        VertexOfGraph* u = q.front();
         q.pop();
         for (auto v: u->edges){
-            if (v->color == WHITE) {
-                v->color = GRAY;
+            if (colors[v] == WHITE) {
+                colors[v] = GRAY;
                 q.push(v);
             }
         }
         func(*u);
-        u->color = BLACK;
+        colors[u] = BLACK;
     }
 }

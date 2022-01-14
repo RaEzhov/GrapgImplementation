@@ -5,13 +5,9 @@
 #include <string>
 #include <list>
 
-enum vertex_color{WHITE, GRAY, BLACK};
-
-class vertex_of_graph {
+class VertexOfGraph {
 public:
-    vertex_color color;
-
-    std::list<vertex_of_graph *> edges;
+    std::list<VertexOfGraph *> edges;
 
     size_t id() const;
 
@@ -21,9 +17,9 @@ public:
 
     const int& operator[](const std::string &key) const;
 
-    vertex_of_graph();
+    VertexOfGraph();
 
-    ~vertex_of_graph();
+    ~VertexOfGraph();
 
 private:
     size_t identifier;
